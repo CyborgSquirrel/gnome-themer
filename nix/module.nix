@@ -23,6 +23,11 @@ in
             type = lib.types.str;
             description = "Source file to link to in light mode.";
           };
+          post_apply = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            description = "Shell command to run after this symlink is applied.";
+          };
         };
       });
       default = [ ];
@@ -33,7 +38,7 @@ in
   config = lib.mkIf cfg.enable {
     xdg.configFile."gnome-themer/config.toml".source =
       (pkgs.formats.toml { }).generate "gnome-themer-config.toml" {
-        link = cfg.links;
+        link = map (l: lib.filterAttrs (_: v: v != null) l) cfg.links;
       };
 
     systemd.user.services.gnome-themer = {
