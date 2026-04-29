@@ -7,5 +7,8 @@ name = "gnome-themer"
 version = "0.1.0"
 requires-python = ">=3.11"
 
+[tool.setuptools.packages.find]
+include = ["gnome_themer*"]
+
 [project.scripts]
 gnome-themer = "gnome_themer.main:main"
